@@ -1,0 +1,20 @@
+<form [formGroup]="getUserForm" (ngSubmit)="onSubmit()">
+  <div>
+    <label for="id">User ID:</label>
+    <input id="id" formControlName="id" type="text" />
+  </div>
+  <button type="submit" [disabled]="getUserForm.invalid">Get User</button>
+</form>
+
+<div *ngIf="message" class="message" [ngClass]="{'success': message?.startsWith('User fetched successfully'), 'error': message?.startsWith('Failed to get user')}">
+  <p>{{ message }}</p>
+</div>
+
+<div *ngIf="user">
+  <h3>User Details:</h3>
+  <p><strong>Name:</strong> {{ user.name }}</p>
+  <p><strong>Username:</strong> {{ user.username }}</p>
+</div>
+<div *ngIf="user === null && getUserForm.valid">
+  <p>No user found or an error occurred.</p>
+</div>

@@ -1,0 +1,11 @@
+<form [formGroup]="deleteUserForm" (ngSubmit)="onSubmit()">
+  <div>
+    <label for="id">User ID:</label>
+    <input id="id" formControlName="id" type="text" />
+  </div>
+  <button type="submit" [disabled]="deleteUserForm.invalid">Delete User</button>
+</form>
+
+<div *ngIf="message" class="message" [ngClass]="{'success': message?.startsWith('User deleted successfully'), 'error': message?.startsWith('Failed to delete user')}">
+  <p>{{ message }}</p>
+</div>

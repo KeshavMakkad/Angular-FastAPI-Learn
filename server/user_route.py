@@ -5,7 +5,7 @@ from user_model import User as User
 from user_schema import User as UserSchema
 
 router = APIRouter(
-  prefix='/user',
+  prefix='/users',
   tags=["Users"]
 )
 

@@ -1,0 +1,19 @@
+<div>
+  <h1>Add User</h1>
+  <form [formGroup]="addUserForm" (ngSubmit)="onSubmit()">
+    <div>
+      <div>
+        <label for="name">Name:</label>
+        <input id="name" formControlName="name" type="text" />
+      </div>
+      <div>
+        <label for="username">Username:</label>
+        <input id="username" formControlName="username" type="text" />
+      </div>
+    </div>
+    <button type="submit" [disabled]="addUserForm.invalid">Submit</button>
+  </form>
+  <div *ngIf="message" class="message" [ngClass]="{'success': message?.startsWith('User added'), 'error': message?.startsWith('Failed to add user')}">
+    <p>{{ message }}</p>
+  </div>  
+</div>

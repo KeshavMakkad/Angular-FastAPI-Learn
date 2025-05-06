@@ -1,0 +1,6 @@
+/* Add any global styles here */
+div{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

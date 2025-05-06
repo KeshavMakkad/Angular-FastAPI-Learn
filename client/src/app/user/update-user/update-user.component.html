@@ -1,0 +1,29 @@
+<form [formGroup]="fetchUserForm" (ngSubmit)="fetchUser()">
+  <div>
+    <label for="username">ID:</label>
+    <input id="username" formControlName="username" type="text" />
+  </div>
+  <button type="submit" [disabled]="fetchUserForm.invalid">Fetch User</button>
+</form>
+
+<div *ngIf="user">
+  <h3>Current User Details:</h3>
+  <p><strong>Name:</strong> {{ user.name }}</p>
+  <p><strong>Username:</strong> {{ user.username }}</p>
+
+  <form [formGroup]="updateUserForm" (ngSubmit)="updateUser()">
+    <div>
+      <label for="name">New Name:</label>
+      <input id="name" formControlName="name" type="text" />
+    </div>
+    <div>
+      <label for="username">New Username:</label>
+      <input id="username" formControlName="username" type="text" />
+    </div>
+    <button type="submit" [disabled]="updateUserForm.invalid">Update User</button>
+  </form>
+</div>
+
+<div *ngIf="message" class="message" [ngClass]="{'success': message?.startsWith('User updated successfully'), 'error': message?.startsWith('Failed')}">
+  <p>{{ message }}</p>
+</div>
