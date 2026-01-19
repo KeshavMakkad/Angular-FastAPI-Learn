@@ -1,0 +1,62 @@
+name: Backend CI
+
+on:
+  push:
+    branches: [ master ]
+    paths:
+      - "server/**"
+      - ".github/workflows/ci.yml"
+  workflow_dispatch:
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      security-events: write
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: "3.10"
+
+    - name: Install backend dependencies
+      run: |
+        cd server
+        pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@v3
+      with:
+        languages: python
+
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@v3
+  
+    - name: Dependency vulnerability scan (pip-audit)
+      run: |
+        cd server
+        pip-audit || true
+
+    - name: Run unit tests
+      run: |
+        cd server
+        pytest
+
+    - name: Build Docker image
+      run: |
+        cd server
+        docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/fastapi-backend:latest .
+
+    - name: Trivy image scan
+      uses: aquasecurity/trivy-action@0.24.0
+      with:
+        image-ref: ${{ secrets.DOCKERHUB_USERNAME }}/fastapi-backend:latest
+        severity: CRITICAL,HIGH
+        exit-code: 0
