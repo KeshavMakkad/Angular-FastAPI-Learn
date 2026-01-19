@@ -31,6 +31,19 @@ jobs:
         pip install --upgrade pip
         pip install -r requirements.txt
 
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@v3
+      with:
+        languages: python
+
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@v3
+  
+    - name: Dependency vulnerability scan (pip-audit)
+      run: |
+        cd server
+        pip-audit || true
+
     - name: Run unit tests
       run: |
         cd server
