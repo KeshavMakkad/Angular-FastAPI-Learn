@@ -23,5 +23,5 @@ jobs:
       run: |
         kubectl delete pod fastapi-backend --ignore-not-found
         kubectl run fastapi-backend \
-          --image=${{ secrets.DOCKERHUB_USERNAME }}/fastapi-backend:latest \
+          --image=${{ secrets.DOCKER_HUB_USERNAME }}/fastapi-backend:latest \
           --port=8000
