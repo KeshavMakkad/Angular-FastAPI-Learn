@@ -1,0 +1,27 @@
+name: Backend CD - Kubernetes
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Set up kubectl
+      uses: azure/setup-kubectl@v4
+
+    - name: Configure kubeconfig
+      run: |
+        mkdir -p ~/.kube
+        echo "${{ secrets.KUBE_CONFIG_DATA }}" | base64 -d > ~/.kube/config
+
+    - name: Deploy FastAPI backend
+      run: |
+        kubectl delete pod fastapi-backend --ignore-not-found
+        kubectl run fastapi-backend \
+          --image=${{ secrets.DOCKERHUB_USERNAME }}/fastapi-backend:latest \
+          --port=8000
